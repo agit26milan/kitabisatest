@@ -1,0 +1,14 @@
+import axios, { Method } from 'axios'
+
+export const requestApi = async (url: string, method: Method, data?: object) => {
+    let baseUrl = window.location.href + 'api'
+    if(!url) return
+    else baseUrl += url
+    try {
+        const requestData = await axios(baseUrl, {method, data})
+        return requestData.data
+    } catch (e) {
+        return e
+    }
+
+}
