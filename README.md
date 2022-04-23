@@ -18,17 +18,18 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+This application using SSR method to get campaign and filter the campaign. Why using SSR method because with SSR it should be good SEO and we can use dynamic meta data when share link through website. Next js setup is quite simple than the other framework like CRA.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## State Management
+For state management this apps is using state management from react (useState), because this app is only one page and not share the data between component.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Unit Test 
+For unit test this app use jest with react-testing-library, because this test library is complete, easy setup and easy to use too than other like enzyme or moca and react team is recomend this library too
 
-## Deploy on Vercel
+## Hooks
+To make code can be tested I use hooks function, with hook function make our code is easy to read
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Typescript
+This app use type script, because with type script we know the data type of each variable. and make easier to develop which data is required and optional
