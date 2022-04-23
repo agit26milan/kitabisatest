@@ -18,6 +18,9 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
+## Node version
+To run this project you must need at least nodejs version 12.22.12 if you use an old node js version it should be show an error when run on local
+
 ## Architecture
 
 This application using SSR method to get campaign and filter the campaign. Why using SSR method because with SSR it should be good SEO and we can use dynamic meta data when share link through website. Next js setup is quite simple than the other framework like CRA.

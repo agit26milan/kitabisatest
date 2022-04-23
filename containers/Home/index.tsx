@@ -74,7 +74,7 @@ const HomePage = () => {
     const [loading, setLoading] = React.useState(true)
     const filterBy = [{label: 'Default', value: null}, {label: 'Donation Goal (ASC)', value: 'donation-asc'}, {label: 'Donation Goal (DSC)', value: 'donation-dsc'}, {label: 'Day Left (ASC)', value: 'day-asc'}, {label: 'Day Left (DSC)', value: 'day-dsc'}]
     const [selectSort, setSelectSort] = React.useState(filterBy[0].label)
-    const getCampaign = async (params:object) => {
+    const getCampaign = async (params:any) => {
         setLoading(true)
         const filter = filterBy.find((sort:DropdownMenuProps) => sort.value === params.sort)
         if(filter) {
