@@ -3,11 +3,11 @@ import dayjs from 'dayjs'
 import { requestApi } from '../../utils/request'
 import { handleParamUrl } from '../../utils/common'
 import { useRouter } from 'next/router'
-
+import {useState} from 'react'
 
 const useHomePage = () => {
     const router = useRouter()
-
+    // const [dataCampaign, setDataCampaign] = useState({})
     const handleExpired = (expired?:number) => {
         if(expired && typeof expired === 'number') {
             dayjs.extend(relativeTime)
@@ -50,7 +50,8 @@ const useHomePage = () => {
         handleExpired,
         getCampaignHandle,
         handleBar,
-        handleSort
+        handleSort,
+        // dataCampaign
     }
 
 }

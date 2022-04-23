@@ -8,7 +8,7 @@ type DropdownPropsArray = {
 }
 
 
-const DropdownComponent = (props: DropdownPropsArray) => {
+const DropdownComponent:React.FC<DropdownPropsArray> = (props) => {
     const {data, label, onClick} = props
     const [toggleDropdown, setToggleDropdown] = React.useState(false)
 

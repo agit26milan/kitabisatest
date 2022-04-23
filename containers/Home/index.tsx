@@ -8,7 +8,8 @@ import { formatMoney, handleParamUrl } from '../../utils/common'
 import useHomePage from './hooks'
 import DropdownComponent from '../../components/Dropdown'
 import { useRouter } from 'next/router'
-
+import Seo from '../../components/Seo'
+import KitabisaImage from '../../assets/images/kitabisa.png'
 type MoneyTextProps = {
     isBold?: boolean,
     alignLeft?:boolean
@@ -66,14 +67,15 @@ margin-left: auto
 const HomePage = () => {
     const funcHomepage = useHomePage()
     const router = useRouter()
-    const {query} = router
     const [listCampaigns, setListCampaigns] = React.useState([])
     const [querySearch, setQuerySearch] = React.useState({
         sort: null
     })
+    const [loading, setLoading] = React.useState(true)
     const filterBy = [{label: 'Default', value: null}, {label: 'Donation Goal (ASC)', value: 'donation-asc'}, {label: 'Donation Goal (DSC)', value: 'donation-dsc'}, {label: 'Day Left (ASC)', value: 'day-asc'}, {label: 'Day Left (DSC)', value: 'day-dsc'}]
     const [selectSort, setSelectSort] = React.useState(filterBy[0].label)
     const getCampaign = async (params:object) => {
+        setLoading(true)
         const filter = filterBy.find((sort:DropdownMenuProps) => sort.value === params.sort)
         if(filter) {
             setSelectSort(filter.label)
@@ -81,6 +83,7 @@ const HomePage = () => {
             setSelectSort(filterBy[0].label)
         }
         const response = await funcHomepage.getCampaignHandle(params)
+        setLoading(false)
         setListCampaigns(response)
     }
 
@@ -91,12 +94,16 @@ const HomePage = () => {
     }
 
     React.useEffect(() => {
-        getCampaign(query)
-    }, [JSON.stringify(query)])
-    console.log(query, 'nanak')
+        getCampaign(router.query)
+    }, [JSON.stringify(router.query)])
+
+
     return (
         <main className={styles.main}>
-        <FilterContainer>
+        <Seo title='Kitabisa.com' description='Kitabisa.com - Situs Donasi Terbesar dan Terpercaya di Indonesia' image={KitabisaImage} />
+        {loading ? null : 
+        <React.Fragment>
+            <FilterContainer>
             <DropdownContainer>
             <DropdownComponent onClick={onClickDropdown} label={selectSort} data={filterBy} />
             </DropdownContainer>
@@ -131,6 +138,8 @@ const HomePage = () => {
         ))}
       
         </Row>
+        </React.Fragment>}
+        
       </main>
     )
 }
