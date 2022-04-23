@@ -1,14 +1,14 @@
 import React from 'react'
-import Image from 'next/image'
 
 import styles from '../../styles/Home.module.css'
-import {Row, Col, Card, CardBody, CardTitle, CardSubtitle, CardText, Button, CardImg, Progress} from 'reactstrap'
-import { requestApi } from '../../utils/request'
+import {Row, Col, Card, CardBody, CardImg, Progress, DropdownMenuProps} from 'reactstrap'
 import styled from 'styled-components'
-import { CampaignProps } from '../../interfaces/campaigns'
-import { formatMoney } from '../../utils/common'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import dayjs from 'dayjs'
+import { CampaignProps, ParamUrlProps } from '../../interfaces/campaigns'
+import { formatMoney, handleParamUrl } from '../../utils/common'
+import useHomePage from './hooks'
+import DropdownComponent from '../../components/Dropdown'
+import { useRouter } from 'next/router'
+
 type MoneyTextProps = {
     isBold?: boolean,
     alignLeft?:boolean
@@ -46,38 +46,61 @@ padding: 1rem 0.5rem;
 `
 
 const CustomProgresBar = styled(Progress)`
-margin: 15px 0px
+margin: 15px 0px;
 `
 
 const FlexCol = styled(Col)`
 display: flex
 `
 
+const FilterContainer = styled.div`
+display: flex;
+margin: 0px 20px;
+width:100% 
+`
+
+const DropdownContainer = styled.div`
+margin-left: auto
+`
+
 const HomePage = () => {
+    const funcHomepage = useHomePage()
+    const router = useRouter()
+    const {query} = router
     const [listCampaigns, setListCampaigns] = React.useState([])
-    const getCampaignHandle = async () => {
-        const response = await requestApi('/v1/campaigns', 'GET')
-        if(response.success) {
-            setListCampaigns(response.data.data)
+    const [querySearch, setQuerySearch] = React.useState({
+        sort: null
+    })
+    const filterBy = [{label: 'Default', value: null}, {label: 'Donation Goal (ASC)', value: 'donation-asc'}, {label: 'Donation Goal (DSC)', value: 'donation-dsc'}, {label: 'Day Left (ASC)', value: 'day-asc'}, {label: 'Day Left (DSC)', value: 'day-dsc'}]
+    const [selectSort, setSelectSort] = React.useState(filterBy[0].label)
+    const getCampaign = async (params:object) => {
+        const filter = filterBy.find((sort:DropdownMenuProps) => sort.value === params.sort)
+        if(filter) {
+            setSelectSort(filter.label)
+        } else {
+            setSelectSort(filterBy[0].label)
         }
-        console.log(response, 'mantap')
+        const response = await funcHomepage.getCampaignHandle(params)
+        setListCampaigns(response)
     }
 
-    const handleExpired = (expired?:number) => {
-        if(expired && typeof expired === 'number') {
-            dayjs.extend(relativeTime)
-            const expiredDate = dayjs.unix(expired).format()
-            return dayjs(expiredDate).fromNow(true) + " lagi"
-        }
-       return null
+    const onClickDropdown = (d:DropdownMenuProps) => {
+        let newQuerySearch = {...querySearch, sort:d.value}
+        setQuerySearch(newQuerySearch)
+        funcHomepage.handleSort(newQuerySearch)
     }
 
     React.useEffect(() => {
-        getCampaignHandle()
-    }, [])
-    console.log(listCampaigns, 'mantul')
+        getCampaign(query)
+    }, [JSON.stringify(query)])
+    console.log(query, 'nanak')
     return (
         <main className={styles.main}>
+        <FilterContainer>
+            <DropdownContainer>
+            <DropdownComponent onClick={onClickDropdown} label={selectSort} data={filterBy} />
+            </DropdownContainer>
+        </FilterContainer>
         <Row>
         {listCampaigns.map((campaign: CampaignProps, index) => (
                 <Column key={index} xs={12} md={12} sm={12} xl={4} lg={4} >
@@ -87,7 +110,7 @@ const HomePage = () => {
                     <TitleText>
                         {campaign.title}
                     </TitleText>
-                    <CustomProgresBar animated value={(campaign.donation_percentage * 100)} />
+                    <CustomProgresBar barStyle={funcHomepage.handleBar(campaign.donation_percentage)} animated value={(campaign.donation_percentage * 100)} />
                     <Row>
                     <Col>
                     <MoneyText isBold >
@@ -96,7 +119,7 @@ const HomePage = () => {
                     </Col>
                     <FlexCol  >
                     <MoneyText isBold alignLeft >
-                        {handleExpired(campaign.expired)}
+                        {funcHomepage.handleExpired(campaign.expired)}
                     </MoneyText>
                     </FlexCol>
                 

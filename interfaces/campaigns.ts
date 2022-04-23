@@ -21,3 +21,12 @@ export interface CampaignProps {
     short_url: string,
     title: string
 }
+
+export interface DropdownProps {
+    label: string,
+    value: string
+}
+
+export interface ParamUrlProps {
+    sort: string
+}
