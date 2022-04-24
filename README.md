@@ -1,5 +1,45 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Introduction
+Thank you for investing your time in Kitabisa code challenge. You should spend not more than 4 hours on the code test. Your solution will be the starting point to be used for the pair programming exercise in our technical interview.
+
+## User Story
+As a user of Kitabisa, I would like to see a list of campaigns that can be sorted by donation goal (ASC) and days left (ASC).
+
+## Details
+Using the following endpoint, request and render a Product List page with the response: https://storage.googleapis.com/southern-waters-642.appspot.com/fe_code_challenge/campaign.json
+
+* Render a Campaign List with the provided metadata
+
+* Render a Campaign Card for each item in the results array.
+* Target bar, below campaign name has different colour based on donation reached percentage against their goal. If donation goal achieved, the bar colour should be pink otherwise the colour is grey
+
+## Expectations
+We value functional, well structured and well-tested code at Kitabisa. Below are our expectations:
+
+* TypeScript + React implementation with state management approach of your choice.
+* We expect you to use your own bundler like webpack, parcel, rollup, vite avoid using `create-react-app`. 
+* Plus point with `SSR` implementation (`Next.js` / `Fastify` / `Express` / `KOA` / `Hapi`). 
+
+* Well-structured code with best practices applied where relevant.
+
+* Unit test  (jasmine, jest, mocha) but preferable jest with testing library
+
+* Cross-browser functional. Minimum IE11 support.
+
+* Responsive and SEO friendly
+
+* A README file explains any coding or architecture decisions you made, along with instructions to bootstrap and run your program.
+
+
+## Included files
+
+* README.md
+
+* Mockup of Campaign List page
+
+#kitabisa
+
 ## Getting Started
 
 First, run the development server:
